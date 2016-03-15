@@ -9,11 +9,16 @@
 void m_write(char* buffer, int fd) 
 {
 	ssize_t rres;
-	while ((rres = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while ((rres = read(fd, buffer, BUFFER_SIZE)))// >0
 	{ 
+		if (rres < 0 && errno == EINTR) 
+		{
+			perror("Error");
+			continue;
+		} else if (rres < 0) return;
 		ssize_t wres = rres, res;
 		while (wres > 0 && (res = write(1, buffer + (rres - wres), wres))) 			{
-			if (res < 0) 
+			if (res < 0 && errno == EINTR) 
 			{
 				perror("Error");
 				continue;
