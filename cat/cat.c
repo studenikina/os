@@ -15,10 +15,8 @@ void m_write(char* buffer, int fd)
 		while (wres > 0 && (res = write(1, buffer + (rres - wres), wres))) 			{
 			if (res < 0) 
 			{
-				perror("Error during writing");
+				perror("Error");
 				continue;
-				//if (errno == EINTER) continue;
-				//return;
 			}
 			wres = rres -res;
 		}
